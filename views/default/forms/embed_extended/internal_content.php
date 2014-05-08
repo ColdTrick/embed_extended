@@ -1,7 +1,11 @@
 <?php
 /**
  * Search form for internal content
+ * 
+ * @uses $vars['container'] optional container
  */
+
+$container = elgg_extract("container", $vars, elgg_get_logged_in_user_entity());
 
 $content_options = false;
 $content_types = get_registered_entity_types();
@@ -35,7 +39,22 @@ echo elgg_view("input/submit", array("value" => elgg_echo("search")));
 echo "</div>";
 
 if (elgg_is_logged_in()) {
-	echo "<div>";
-	echo elgg_view("input/checkbox", array("name" => "match_owner", "value" => 1, "label" => elgg_echo("embed_extended:internal_content:match_owner")));
-	echo "</div>";
+	echo "<span class='mrm'>";
+	echo elgg_view("input/checkbox", array(
+		"name" => "match_owner", 
+		"value" => 1, 
+		"label" => elgg_echo("embed_extended:internal_content:match_owner")
+	));
+	echo "</span>";
+}
+
+if (elgg_instanceof($container, "group")) {
+	echo "<span class='mrm'>";
+	echo elgg_view("input/checkbox", array(
+		"name" => "match_container", 
+		"value" => $container->getGUID(), 
+		"label" => elgg_echo("embed_extended:internal_content:container"),
+		"checked" => "checked" 
+	));
+	echo "</span>";
 }

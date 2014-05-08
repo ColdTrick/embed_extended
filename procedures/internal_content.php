@@ -6,6 +6,17 @@
 $q = get_input("q");
 $type_subtype = get_input("type_subtype");
 $match_owner = (int) get_input("match_owner");
+$match_container = (int) get_input("match_container");
+
+$owner_guid = ELGG_ENTITIES_ANY_VALUE;
+if (!empty($match_owner) && elgg_is_logged_in()) {
+	$owner_guid = elgg_get_logged_in_user_guid();
+}
+
+$container_guid = ELGG_ENTITIES_ANY_VALUE;
+if (!empty($match_container)) {
+	$container_guid = $match_container;
+}
 
 $type = ELGG_ENTITIES_ANY_VALUE;
 $subtype = ELGG_ENTITIES_ANY_VALUE;
@@ -33,35 +44,32 @@ if ($type == ELGG_ENTITIES_ANY_VALUE || $type == "object") {
 		"type" => "object",
 		"subtypes" => $subtypes,
 		"limit" => 10,
+		"owner_guid" => $owner_guid,
+		"container_guid" => $container_guid,
 		"joins" => array("JOIN " . $dbprefix . "objects_entity oe ON e.guid = oe.guid"),
 		"wheres" => array("(oe.title LIKE '%" . sanitise_string($q) . "%')"),
 	);
-	if ($match_owner && elgg_is_logged_in()) {
-		$options["owner_guid"] = elgg_get_logged_in_user_guid();
-	}
 	
 	$objects = elgg_get_entities($options);
 	if (!empty($objects)) {
-		$entities += $objects;
+		$entities = $objects;
 	}
 }
 
 // search groups
-if ($type == ELGG_ENTITIES_ANY_VALUE || $type == "group") {
+if (($type == ELGG_ENTITIES_ANY_VALUE || $type == "group") && ($container_guid != ELGG_ENTITIES_ANY_VALUE)) {
 	
 	$options = array(
 		"type" => "group",
 		"limit" => 10,
+		"owner_guid" => $owner_guid,
 		"joins" => array("JOIN " . $dbprefix . "groups_entity ge ON e.guid = ge.guid"),
 		"wheres" => array("(ge.name LIKE '%" . sanitise_string($q) . "%')"),
 	);
-	if ($match_owner && elgg_is_logged_in()) {
-		$options["owner_guid"] = elgg_get_logged_in_user_guid();
-	}
 	
 	$groups = elgg_get_entities($options);
 	if (!empty($groups)) {
-		$entities += $groups;
+		$entities = array_merge($entities, $groups);
 	}
 }
 
@@ -74,15 +82,20 @@ if ($type == ELGG_ENTITIES_ANY_VALUE || $type == "user") {
 		"joins" => array("JOIN " . $dbprefix . "users_entity ue ON e.guid = ue.guid"),
 		"wheres" => array("(ue.name LIKE '%" . sanitise_string($q) . "%' OR ue.username LIKE '%" . sanitise_string($q) . "%')"),
 	);
-	if ($match_owner && elgg_is_logged_in()) {
-		$options["relationship_guid"] = elgg_get_logged_in_user_guid();
+	if ($owner_guid != ELGG_ENTITIES_ANY_VALUE) {
+		$options["relationship_guid"] = $owner_guid;
 		$options["relationship"] = "friend";
+	}
+	if ($container_guid != ELGG_ENTITIES_ANY_VALUE) {
+		$options["relationship_guid"] = $container_guid;
+		$options["relationship"] = "member";
+		$options["inverse_relationship"] = true;
 	}
 	
 	$users = elgg_get_entities_from_relationship($options);
 	if (!empty($users)) {
-		$entities += $users;
-	}
+		$entities = array_merge($entities, $users);
+	}	
 }
 
 if (!empty($entities)) {

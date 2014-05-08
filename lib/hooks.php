@@ -18,7 +18,7 @@ function embed_extended_register_embed_menu_hook($hook, $type, $return_value, $p
 	$return_value[] = ElggMenuItem::factory(array(
 		"name" => "internal_content",
 		"text" => elgg_echo("embed_extended:menu:embed:internal_content"),
-		"priotity" => 50,
+		"priotity" => 150,
 		"data" => array(
 			"view" => "embed_extended/internal_content"
 		)

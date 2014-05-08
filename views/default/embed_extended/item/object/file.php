@@ -1,20 +1,13 @@
 <?php
 /**
- * Embeddable content list item view
+ * Embeddable content list item view for file
  * 
- * This is the default fallback view. To create adifferent view for your entity type use:
- * - embed_extended/item/{type}/{subtype} or
- * - embed_extended/item/{type}
- *
  * @uses $vars["entity"] ElggEntity object
  */
 
 $entity = $vars["entity"];
 
 $title = $entity->title;
-if (!$title) {
-	$title = $entity->name;
-}
 
 // don't let it be too long
 $title = elgg_get_excerpt($title);
@@ -33,13 +26,13 @@ if ($owner) {
 	$subtitle = "$author_text $group_text $date";
 }
 
-$title = elgg_view("output/url", array("text" => $title, "href" => $entity->getURL(), "class" => "embed-insert"));
-
-if ($entity->getSubtype()) {
-	$type_subtype_text = "<span class='elgg-quiet'>" . elgg_echo("item:" . $entity->getType() . ":" . $entity->getSubtype()) . "</span>";
+if ($entity->simpletype == "image") {
+	$title .= elgg_view_entity_icon($entity, "large", array("img_class" => "embed-insert", "link_class" => "hidden"));
 } else {
-	$type_subtype_text = "<span class='elgg-quiet'>" . elgg_echo("item:" . $entity->getType()) . "</span>";
+	$title = elgg_view("output/url", array("text" => $title, "href" => $entity->getURL(), "class" => "embed-insert"));
 }
+
+$type_subtype_text = "<span class='elgg-quiet'>" . elgg_echo("item:object:file") . "</span>";
 
 $params = array(
 	"title" => $title,
@@ -49,6 +42,6 @@ $params = array(
 );
 $body = elgg_view("object/elements/summary", $params);
 
-$image = elgg_view_entity_icon($entity->getOwnerEntity(), "tiny");
+$image = elgg_view_entity_icon($entity, "small");
 
 echo elgg_view_image_block($image, $body, array("image_alt" => $type_subtype_text));
