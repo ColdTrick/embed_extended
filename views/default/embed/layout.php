@@ -31,6 +31,11 @@ $container_info = elgg_view('input/hidden', array(
 ));
 
 echo <<<HTML
+<script type='text/javascript'>
+	// check if embed is loaded in a lightbox
+	elgg.embed_extended.lightbox_initialize();
+</script>
+
 <div class="embed-wrapper">
 	$title
 	$menu

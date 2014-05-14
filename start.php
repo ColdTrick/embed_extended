@@ -17,9 +17,10 @@ elgg_register_event_handler("init", "system", "embed_extended_init");
  */
 function embed_extended_init() {
 	
-	// add css
+	// add CSS / JS
 	elgg_extend_view("css/elgg", "css/embed_extended/global");
 	elgg_extend_view("css/admin", "css/embed_extended/global");
+	elgg_extend_view("js/elgg", "js/embed_extended/site");
 	
 	// register page handler
 	elgg_register_page_handler("embed_extended", "embed_extended_page_handler");
