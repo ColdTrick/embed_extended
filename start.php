@@ -27,4 +27,5 @@ function embed_extended_init() {
 	
 	// register plugin hooks
 	elgg_register_plugin_hook_handler("register", "menu:embed", "embed_extended_register_embed_menu_hook");
+	elgg_register_plugin_hook_handler("prepare", "menu:longtext", "embed_extended_prepare_longtext_menu_hook");
 }
