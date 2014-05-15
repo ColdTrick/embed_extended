@@ -85,46 +85,58 @@ elgg.embed_extended.insert = function(event) {
 	elgg.embed_extended.lightbox_close();
 };
 
+elgg.embed_extended.move_lighbox_content = function() {
+	$("#cboxLoadedContent").attr("id", "cboxOriginalContent").hide();
+	$("#cboxOriginalContent").after("<div id='cboxLoadedContent'></div>");
+
+	$("#cboxLoadingOverlay").show();
+	
+	$("#cboxClose").unbind(); 
+	$("#cboxClose").bind("click", elgg.embed_extended.lightbox_close);
+};
+
+elgg.embed_extended.detect_lightbox = function(event) {
+	if ($("#cboxLoadedContent").length) {
+		elgg.embed_extended.move_lighbox_content();
+		
+		var href = $(this).attr("href");
+		elgg.get(href, {
+			success: function(data) {
+				
+				$("#cboxLoadedContent").html(data);
+
+				$("#cboxLoadingOverlay").hide();
+
+				$(".embed-item").live("click", elgg.embed_extended.insert);
+				 
+			}
+		});	
+		
+	} else {
+		opts = {};
+		// merge opts into defaults
+		opts = $.extend({}, elgg.ui.lightbox.getSettings(), opts);
+
+		var $this = $(this),
+			href = $this.prop('href') || $this.prop('src'),
+			dataOpts = $this.data('colorboxOpts');
+		// Q: why not use "colorbox"? A: https://github.com/jackmoore/colorbox/issues/435
+
+		if (!$.isPlainObject(dataOpts)) {
+			dataOpts = {};
+		}
+
+		// merge data- options into opts
+		$.colorbox($.extend({href: href}, opts, dataOpts));
+	}
+	event.preventDefault();
+};
+
 /**
  * custom lightbox initialization to fix issue with embed loaded in a lightbox
  */
 elgg.embed_extended.init = function() {
-	$(document).on("click",".embed-extended-lightbox", function(event) {
-		if ($("#cboxLoadedContent").length) {
-			var href = $(this).attr("href");
-			elgg.get(href, {
-				success: function(data) {
-					$("#cboxLoadedContent").attr("id", "cboxOriginalContent").hide();
-					$("#cboxOriginalContent").after("<div id='cboxLoadedContent'></div>");
-					$("#cboxLoadedContent").html(data);
-					
-					$("#cboxClose").unbind(); 
-					$("#cboxClose").bind("click", elgg.embed_extended.lightbox_close);
-
-					$(".embed-item").live("click", elgg.embed_extended.insert);
-					 
-				}
-			});	
-			
-		} else {
-			opts = {};
-			// merge opts into defaults
-			opts = $.extend({}, elgg.ui.lightbox.getSettings(), opts);
-
-			var $this = $(this),
-				href = $this.prop('href') || $this.prop('src'),
-				dataOpts = $this.data('colorboxOpts');
-			// Q: why not use "colorbox"? A: https://github.com/jackmoore/colorbox/issues/435
-
-			if (!$.isPlainObject(dataOpts)) {
-				dataOpts = {};
-			}
-
-			// merge data- options into opts
-			$.colorbox($.extend({href: href}, opts, dataOpts));
-		}
-		event.preventDefault();
-	});
+	$(document).on("click", ".elgg-embed-lightbox", elgg.embed_extended.detect_lightbox);
 
 	// need to reregister
 	// caches the current textarea id
