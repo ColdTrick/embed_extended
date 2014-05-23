@@ -32,6 +32,40 @@ elgg.embed_extended.lightbox_close = function() {
 }
 
 /**
+ * Helper function to insert into the editor
+ *
+ * @param {String} hook
+ * @param {String} type
+ * @param {Object} params
+ * @param {String|Boolean} value
+ * @returns {String|Boolean}
+ */
+elgg.embed_extended.insert_ckeditor = function(hook, type, params, value) {
+	var textArea = $('#' + params.textAreaId);
+	var content = params.content;
+	if ($.fn.ckeditorGet) {
+		try {
+			var editor = textArea.ckeditorGet();
+			var selected_text = editor.getSelection().getNative().toString();
+
+			if (selected_text) {
+				$content = $(content);
+				if ($content.is("a")) {
+					$content.html(selected_text);
+					content = $content.prop('outerHTML');;
+					
+				}
+			}
+
+			editor.insertHtml(content);
+			return false;
+		} catch (e) {
+			// do nothing.
+		}
+	}
+}
+
+/**
  * Inserts data attached to an embed list item in textarea
  *
  * @param {Object} event
@@ -144,6 +178,8 @@ elgg.embed_extended.init = function() {
 		var textAreaId = /embed-control-(\S)+/.exec($(this).attr('class'))[0];
 		elgg.embed_extended.textAreaId = textAreaId.substr("embed-control-".length);
 	});
+
+	elgg.register_hook_handler('embed', 'editor', elgg.embed_extended.insert_ckeditor);
 }
 
 elgg.register_hook_handler('init', 'system', elgg.embed_extended.init);

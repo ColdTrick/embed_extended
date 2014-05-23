@@ -26,6 +26,12 @@
 		<plugin>embed</plugin>
 		<priority>after</priority>
 	</requires>
+
+	<requires>
+		<type>priority</type>
+		<plugin>ckeditor</plugin>
+		<priority>after</priority>
+	</requires>
 	
  	<category>ColdTrick</category>
 </plugin_manifest>
