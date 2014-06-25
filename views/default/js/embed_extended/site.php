@@ -46,18 +46,17 @@ elgg.embed_extended.insert_ckeditor = function(hook, type, params, value) {
 	if ($.fn.ckeditorGet) {
 		try {
 			var editor = textArea.ckeditorGet();
-			var selected_text = editor.getSelection().getNative().toString();
-
-			if (selected_text) {
-				$content = $(content);
+			
+			if (elgg.embed_extended.selectedText) {
+				var $content = $(content);
 				if ($content.is("a")) {
-					$content.html(selected_text);
+					$content.html(elgg.embed_extended.selectedText);
 					content = $content.prop('outerHTML');;
 					
 				}
 			}
 
-			editor.insertHtml(content);
+			editor.insertHtml(content);	
 			return false;
 		} catch (e) {
 			// do nothing.
@@ -177,6 +176,8 @@ elgg.embed_extended.init = function() {
 	$(".embed-control").live('click', function() {
 		var textAreaId = /embed-control-(\S)+/.exec($(this).attr('class'))[0];
 		elgg.embed_extended.textAreaId = textAreaId.substr("embed-control-".length);
+
+		elgg.embed_extended.selectedText = $('#' + elgg.embed_extended.textAreaId).ckeditorGet().getSelection().getNative().toString();			
 	});
 
 	elgg.register_hook_handler('embed', 'editor', elgg.embed_extended.insert_ckeditor);
