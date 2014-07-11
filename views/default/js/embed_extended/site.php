@@ -26,7 +26,7 @@ elgg.embed_extended.lightbox_close = function() {
 	$("#cboxLoadedContent").remove();
 	$("#cboxOriginalContent").attr("id", "cboxLoadedContent").show();
 
-	$("#cboxClose").bind("click", elgg.ui.lightbox.close); 
+	$("#cboxClose").bind("click", elgg.ui.lightbox.close);
 
 	return false;
 }
@@ -56,7 +56,7 @@ elgg.embed_extended.insert_ckeditor = function(hook, type, params, value) {
 				}
 			}
 
-			editor.insertHtml(content);	
+			editor.insertHtml(content);
 			return false;
 		} catch (e) {
 			// do nothing.
@@ -124,7 +124,7 @@ elgg.embed_extended.move_lighbox_content = function() {
 
 	$("#cboxLoadingOverlay").show();
 	
-	$("#cboxClose").unbind(); 
+	$("#cboxClose").unbind();
 	$("#cboxClose").bind("click", elgg.embed_extended.lightbox_close);
 };
 
@@ -143,7 +143,7 @@ elgg.embed_extended.detect_lightbox = function(event) {
 				$(".embed-item").live("click", elgg.embed_extended.insert);
 				 
 			}
-		});	
+		});
 		
 	} else {
 		opts = {};
@@ -177,7 +177,7 @@ elgg.embed_extended.init = function() {
 		var textAreaId = /embed-control-(\S)+/.exec($(this).attr('class'))[0];
 		elgg.embed_extended.textAreaId = textAreaId.substr("embed-control-".length);
 
-		elgg.embed_extended.selectedText = $('#' + elgg.embed_extended.textAreaId).ckeditorGet().getSelection().getNative().toString();			
+		//elgg.embed_extended.selectedText = $('#' + elgg.embed_extended.textAreaId).ckeditorGet().getSelection().getNative().toString();
 	});
 
 	elgg.register_hook_handler('embed', 'editor', elgg.embed_extended.insert_ckeditor);
