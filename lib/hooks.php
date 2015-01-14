@@ -44,7 +44,11 @@ function embed_extended_prepare_longtext_menu_hook($hook, $type, $return_value, 
 			if (!empty($menu_items) && is_array($menu_items)) {
 				foreach ($menu_items as $menu_item) {
 					if ($menu_item->getName() == "embed") {
-						elgg_require_js("embed_extended/site");
+						if (elgg_is_xhr()) {
+							echo "<script type='text/javascript'>require(['embed_extended/site']);</script>";	
+						} else {
+							elgg_require_js("embed_extended/site");
+						}
 						
 						$link_class = $menu_item->getLinkClass();
 						$link_class = str_ireplace("elgg-lightbox", "elgg-embed-lightbox", $link_class);
