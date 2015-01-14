@@ -1,9 +1,3 @@
-<?php
-/**
- * Add to global site JS
- */
-?>
-//<script>
 elgg.provide("elgg.embed_extended");
 
 /**
