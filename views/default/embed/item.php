@@ -32,7 +32,7 @@ if ($owner) {
 if (elgg_instanceof($entity, "object", "file") && $entity->simpletype == "image") {
 	$title .= elgg_view_entity_icon($entity, "large", array("img_class" => "embed-insert", "link_class" => "hidden"));
 } else {
-	$title = elgg_view("output/url", array("text" => $title, "href" => $entity->getGUID(), "class" => "embed-insert"));
+	$title = elgg_view("output/url", array("text" => $title, "href" => $entity->getURL(), "class" => "embed-insert"));
 }
 
 $image = elgg_view_entity_icon($entity, "small");
