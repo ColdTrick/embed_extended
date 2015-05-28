@@ -1,0 +1,17 @@
+{
+	"name": "coldtrick/embed_extended",
+	"description": "Extends the functionality of the Embed plugin",
+	"type": "elgg-plugin",
+	"keywords": ["elgg", "plugin", "export"],
+	"license": "GPL-2.0",
+	"support": {
+		"source": "https://github.com/ColdTrick/embed_extended",
+		"issues": "https://github.com/ColdTrick/embed_extended/issues"
+	},
+	"require": {
+		"composer/installers": "^1.0.8"
+	},
+	"require-dev": {
+		"coldtrick/sniffs": "dev-master"
+	}
+}
