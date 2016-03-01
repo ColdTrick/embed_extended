@@ -140,7 +140,7 @@ elgg.embed_extended.detect_lightbox = function(event) {
 
 				$("#cboxLoadingOverlay").hide();
 
-				$(".embed-item").live("click", elgg.embed_extended.insert);
+				$(document).on('click', '.embed-item', elgg.embed_extended.insert);
 				 
 			}
 		});
@@ -172,10 +172,10 @@ elgg.embed_extended.init = function() {
 	$(document).on("click", ".elgg-embed-lightbox", elgg.embed_extended.detect_lightbox);
 
 	// need to reregister
-	$(".embed-item").die();
-	$(".embed-item").live('click', elgg.embed_extended.insert);
+	$('.embed-item').off();
+	$(document).on('click', '.embed-item', elgg.embed_extended.insert);
 	// caches the current textarea id
-	$(".embed-control").live('click', function() {
+	$(document).on('click', '.embed-control', function() {
 		var textAreaId = /embed-control-(\S)+/.exec($(this).attr('class'))[0];
 		elgg.embed_extended.textAreaId = textAreaId.substr("embed-control-".length);
 
