@@ -4,6 +4,7 @@
 
 .elgg-form-embed-extended-internal-content select {
 	width: 150px;
+	margin: 0 5px;
 }
 
 .elgg-form-embed-extended-internal-content fieldset > div {
