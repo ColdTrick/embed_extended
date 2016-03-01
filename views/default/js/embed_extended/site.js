@@ -11,7 +11,7 @@ elgg.embed_extended.lightbox_initialize = function() {
 		// JS was not loaded so do that
 		$.getScript(elgg.get_simplecache_url("js", "embed/embed"));
 	}
-}
+};
 
 /**
  * Helper function to close embedded windows opened in a lightbox
@@ -29,7 +29,7 @@ elgg.embed_extended.lightbox_close = function() {
 	}
 
 	return false;
-}
+};
 
 /**
  * Helper function to insert into the editor
@@ -62,7 +62,7 @@ elgg.embed_extended.insert_ckeditor = function(hook, type, params, value) {
 			// do nothing.
 		}
 	}
-}
+};
 
 /**
  * Inserts data attached to an embed list item in textarea
@@ -183,6 +183,6 @@ elgg.embed_extended.init = function() {
 	});
 
 	elgg.register_hook_handler('embed', 'editor', elgg.embed_extended.insert_ckeditor);
-}
+};
 
 elgg.register_hook_handler('init', 'system', elgg.embed_extended.init);
