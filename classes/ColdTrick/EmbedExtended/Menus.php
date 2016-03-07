@@ -53,17 +53,14 @@ class Menus {
 				if ($menu_item->getName() !== 'embed') {
 					continue;
 				}
-				
-				if (elgg_is_xhr()) {
-					echo elgg_format_element('script', [], 'require(["embed_extended/site"]);');
-				} else {
-					elgg_require_js('embed_extended/site');
-				}
+
+				echo elgg_format_element('script', [], 'require(["embed_extended/site"]);');
 
 				$link_class = $menu_item->getLinkClass();
 				$link_class = str_ireplace('elgg-lightbox', 'elgg-embed-lightbox', $link_class);
 
 				$menu_item->setLinkClass($link_class);
+				$menu_item->setHref('embed');
 			}
 		}
 	}
