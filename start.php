@@ -24,4 +24,5 @@ function embed_extended_init() {
 	elgg_register_plugin_hook_handler('register', 'menu:embed', '\ColdTrick\EmbedExtended\Menus::embedMenuRegister');
 	elgg_register_plugin_hook_handler('prepare', 'menu:longtext', '\ColdTrick\EmbedExtended\Menus::longtextMenuPrepare');
 	
+	elgg_unextend_view('embed/embed.js', 'elgg/ckeditor/insert.js');
 }
