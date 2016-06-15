@@ -58,7 +58,7 @@ if ($type == ELGG_ENTITIES_ANY_VALUE || $type == 'object') {
 }
 
 // search groups
-if (($type == ELGG_ENTITIES_ANY_VALUE || $type == 'group') && ($container_guid != ELGG_ENTITIES_ANY_VALUE)) {
+if (($type == ELGG_ENTITIES_ANY_VALUE || $type == 'group') && ($container_guid == ELGG_ENTITIES_ANY_VALUE)) {
 
 	$groups = elgg_get_entities([
 		'type' => 'group',
@@ -67,6 +67,7 @@ if (($type == ELGG_ENTITIES_ANY_VALUE || $type == 'group') && ($container_guid !
 		'joins' => ["JOIN {$dbprefix}groups_entity ge ON e.guid = ge.guid"],
 		'wheres' => ["(ge.name LIKE '%{$q}%')"],
 	]);
+
 	if (!empty($groups)) {
 		$entities = array_merge($entities, $groups);
 	}
