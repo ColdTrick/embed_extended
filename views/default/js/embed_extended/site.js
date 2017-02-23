@@ -1,4 +1,4 @@
-define(['jquery', 'elgg'], function($, elgg) {
+define(['jquery', 'elgg', 'elgg/lightbox', 'elgg/embed'], function($, elgg, lightbox) {
 
 	var textAreaId;
 	
@@ -13,45 +13,12 @@ define(['jquery', 'elgg'], function($, elgg) {
 			$("#cboxOriginalContent").attr("id", "cboxLoadedContent").show();
 		
 			$("#cboxClose").unbind();
-			$("#cboxClose").bind("click", elgg.ui.lightbox.close);
+			$("#cboxClose").bind("click", lightbox.close);
 		} else {
-			elgg.ui.lightbox.close();
+			lightbox.close();
 		}
 		
 		return false;
-	};
-	
-	/**
-	 * Helper function to insert into the editor
-	 *
-	 * @param {String} hook
-	 * @param {String} type
-	 * @param {Object} params
-	 * @param {String|Boolean} value
-	 * @returns {String|Boolean}
-	 */
-	var insert_ckeditor = function(hook, type, params, value) {
-		var textArea = $('#' + params.textAreaId);
-		var content = params.content;
-	 	if ($.fn.ckeditorGet) {
-			try {
-				var editor = textArea.ckeditorGet();
-	 			var selection = editor.getSelection().getSelectedText();
-			    
-				if (selection) {
-					var $content = $(content);
-					if ($content.is("a")) {
-						$content.html(selection);
-						content = $content.prop('outerHTML');
-					}
-				}
-	
-				editor.insertHtml(content);
-				return false;
-			} catch (e) {
-				// do nothing.
-			}
-		}
 	};
 	
 	/**
@@ -138,7 +105,7 @@ define(['jquery', 'elgg'], function($, elgg) {
 		} else {
 			opts = {};
 			// merge opts into defaults
-			opts = $.extend({}, elgg.ui.lightbox.getSettings(), opts);
+			opts = $.extend({}, lightbox.getOptions(), opts);
 	
 			var $this = $(this),
 				href = $this.prop('href') || $this.prop('src'),
@@ -169,11 +136,7 @@ define(['jquery', 'elgg'], function($, elgg) {
 		$(document).on('click', '.embed-control', function() {
 			textAreaId = /embed-control-(\S)+/.exec($(this).attr('class'))[0];
 			textAreaId = textAreaId.substr("embed-control-" . length);
-	
-			//elgg.embed_extended.selectedText = $('#' + elgg.embed_extended.textAreaId).ckeditorGet().getSelection().getNative().toString();
 		});
-	
-		elgg.register_hook_handler('embed', 'editor', insert_ckeditor);
 	};
 	
 	elgg.register_hook_handler('init', 'system', init);
