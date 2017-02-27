@@ -1,6 +1,12 @@
 Version history
 ===============
 
+2.0.2 (2017-02-27):
+
+- Create ru.php
+- fixed: groups were not include in the search results
+- fixed: updated for AMD module elgg/embed
+
 2.0.1 (2016-04-14):
 
 - fixed: prevent double inserting of content in ckeditor
