@@ -3,7 +3,6 @@ Version history
 
 2.0.2 (2017-02-27):
 
-- Create ru.php
 - fixed: groups were not include in the search results
 - fixed: updated for AMD module elgg/embed
 
