@@ -31,6 +31,9 @@ define(['jquery', 'elgg', 'elgg/lightbox', 'elgg/embed'], function($, elgg, ligh
 		var textArea = $('#' + textAreaId);
 	
 		// generalize this based on a css class attached to what should be inserted
+		//Remove title text
+		$(this).find(".remove").remove();
+		//
 		var content = ' ' + $(this).find(".embed-insert").parent().html() + ' ';
 		var value = textArea.val();
 		var result = textArea.val();
@@ -39,7 +42,7 @@ define(['jquery', 'elgg', 'elgg/lightbox', 'elgg/embed'], function($, elgg, ligh
 		if (content.indexOf('thumbnail.php') != -1) {
 			content = content.replace('size=small', 'size=medium');
 		}
-	
+
 		textArea.focus();
 	
 		if (!elgg.isNullOrUndefined(textArea.prop('selectionStart'))) {
