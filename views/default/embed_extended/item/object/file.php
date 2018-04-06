@@ -27,7 +27,12 @@ if ($owner) {
 }
 
 if ($entity->simpletype == "image") {
-	$title .= elgg_view_entity_icon($entity, "large", array("img_class" => "embed-insert", "link_class" => "hidden"));
+	$img_attrs = [
+		'title' => $title,
+		'src' => elgg_get_embed_url ($entity, 'large'),
+		'class' => 'embed-insert hidden',
+	];
+	$title = elgg_format_element('img', $img_attrs);
 } else {
 	$title = elgg_view("output/url", array("text" => $title, "href" => $entity->getURL(), "class" => "embed-insert"));
 }
