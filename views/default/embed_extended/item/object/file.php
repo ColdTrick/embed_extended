@@ -10,7 +10,8 @@ $entity = $vars["entity"];
 $title = $entity->title;
 
 // don't let it be too long
-$title = elgg_get_excerpt($title);
+// Add class "remove" to delete title text on insert
+$title = elgg_format_element ('div', ['class' => 'remove'], elgg_get_excerpt($title));
 
 $subtitle = "";
 $owner = $entity->getOwnerEntity();
@@ -27,7 +28,12 @@ if ($owner) {
 }
 
 if ($entity->simpletype == "image") {
-	$title .= elgg_view_entity_icon($entity, "large", array("img_class" => "embed-insert", "link_class" => "hidden"));
+	$img_attrs = [
+		'title' => $title,
+		'src' => elgg_get_embed_url ($entity, 'large'),
+		'class' => 'embed-insert hidden',
+	];
+	$title .= elgg_format_element('img', $img_attrs);
 } else {
 	$title = elgg_view("output/url", array("text" => $title, "href" => $entity->getURL(), "class" => "embed-insert"));
 }
