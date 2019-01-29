@@ -6,7 +6,7 @@
  * @uses $vars['item_class']  Additional CSS class for the <li> elements
  */
 
-$q = sanitise_string(get_input('q'));
+$q = get_input('q');
 $type_subtype = get_input('type_subtype');
 $match_owner = (int) get_input('match_owner');
 $match_container = (int) get_input('match_container');
@@ -33,7 +33,6 @@ if (!empty($type_subtype)) {
 }
 
 $entities = [];
-$dbprefix = elgg_get_config('dbprefix');
 
 // search objects
 if ($type == ELGG_ENTITIES_ANY_VALUE || $type == 'object') {
@@ -43,14 +42,13 @@ if ($type == ELGG_ENTITIES_ANY_VALUE || $type == 'object') {
 		$subtypes = [$subtype];
 	}
 
-	$objects = elgg_get_entities([
+	$objects = elgg_search([
 		'type' => 'object',
 		'subtypes' => $subtypes,
 		'limit' => 10,
 		'owner_guid' => $owner_guid,
 		'container_guid' => $container_guid,
-		'joins' => ["JOIN {$dbprefix}objects_entity oe ON e.guid = oe.guid"],
-		"wheres" => ["(oe.title LIKE '%{$q}%')"],
+		'query' => $q,
 	]);
 	if (!empty($objects)) {
 		$entities = $objects;
@@ -60,12 +58,11 @@ if ($type == ELGG_ENTITIES_ANY_VALUE || $type == 'object') {
 // search groups
 if (($type == ELGG_ENTITIES_ANY_VALUE || $type == 'group') && ($container_guid == ELGG_ENTITIES_ANY_VALUE)) {
 
-	$groups = elgg_get_entities([
+	$groups = elgg_search([
 		'type' => 'group',
 		'limit' => 10,
 		'owner_guid' => $owner_guid,
-		'joins' => ["JOIN {$dbprefix}groups_entity ge ON e.guid = ge.guid"],
-		'wheres' => ["(ge.name LIKE '%{$q}%')"],
+		'query' => $q,
 	]);
 
 	if (!empty($groups)) {
@@ -79,8 +76,7 @@ if ($type == ELGG_ENTITIES_ANY_VALUE || $type == 'user') {
 	$options = [
 		'type' => 'user',
 		'limit' => 10,
-		'joins' => ["JOIN {$dbprefix}users_entity ue ON e.guid = ue.guid"],
-		'wheres' => ["(ue.name LIKE '%{$q}%' OR ue.username LIKE '%{$q}%')"],
+		'query' => $q,
 	];
 	
 	if ($owner_guid != ELGG_ENTITIES_ANY_VALUE) {
@@ -93,7 +89,7 @@ if ($type == ELGG_ENTITIES_ANY_VALUE || $type == 'user') {
 		$options['inverse_relationship'] = true;
 	}
 
-	$users = elgg_get_entities_from_relationship($options);
+	$users = elgg_search($options);
 	if (!empty($users)) {
 		$entities = array_merge($entities, $users);
 	}

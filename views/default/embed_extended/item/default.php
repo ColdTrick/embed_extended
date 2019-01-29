@@ -1,54 +1,32 @@
 <?php
 /**
  * Embeddable content list item view
- * 
+ *
  * This is the default fallback view. To create adifferent view for your entity type use:
  * - embed_extended/item/{type}/{subtype} or
  * - embed_extended/item/{type}
  *
- * @uses $vars["entity"] ElggEntity object
+ * @uses $vars['entity'] ElggEntity object
  */
 
-$entity = $vars["entity"];
+$entity = elgg_extract('entity', $vars);
 
-$title = $entity->title;
-if (!$title) {
-	$title = $entity->name;
+$title = elgg_extract('title', $vars);
+if (empty($title)) {
+	$title = elgg_view('output/url', [
+		'text' => elgg_get_excerpt($entity->getDisplayName()),
+		'href' => $entity->getURL(),
+		'class' => 'embed-insert',
+	]);
 }
 
-// don't let it be too long
-$title = elgg_get_excerpt($title);
+$type_subtype_text = '<span class="elgg-quiet float-alt">' . elgg_echo('item:' . $entity->getType() . ':' . $entity->getSubtype()) . '</span>';
 
-$subtitle = "";
-$owner = $entity->getOwnerEntity();
-if ($owner) {
-	$author_text = elgg_echo("byline", array($owner->name));
-	$date = elgg_view_friendly_time($entity->time_created);
-	
-	$group_text = "";
-	$container = $entity->getContainerEntity();
-	if (elgg_instanceof($container, "group")) {
-		$group_text = elgg_echo("river:ingroup", array($container->name));
-	}
-	$subtitle = "$author_text $group_text $date";
-}
-
-$title = elgg_view("output/url", array("text" => $title, "href" => $entity->getURL(), "class" => "embed-insert"));
-
-if ($entity->getSubtype()) {
-	$type_subtype_text = "<span class='elgg-quiet'>" . elgg_echo("item:" . $entity->getType() . ":" . $entity->getSubtype()) . "</span>";
-} else {
-	$type_subtype_text = "<span class='elgg-quiet'>" . elgg_echo("item:" . $entity->getType()) . "</span>";
-}
-
-$params = array(
-	"title" => $title,
-	"entity" => $entity,
-	"subtitle" => $subtitle,
-	"tags" => FALSE,
-);
-$body = elgg_view("object/elements/summary", $params);
-
-$image = elgg_view_entity_icon($entity->getOwnerEntity(), "tiny");
-
-echo elgg_view_image_block($image, $body, array("image_alt" => $type_subtype_text));
+echo elgg_view('object/elements/summary', [
+	'title' => $title,
+	'entity' => $entity,
+	'icon_entity' => $entity,
+	'metadata' => $type_subtype_text,
+	'tags' => false,
+	'show_links' => false,
+]);
