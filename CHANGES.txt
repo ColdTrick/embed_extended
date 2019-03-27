@@ -1,6 +1,12 @@
 Version history
 ===============
 
+3.0 (2019-03-27):
+
+- added: Spanish translation
+- changed: increased Elgg requirement to 3.0
+- changed: updated for Elgg 3
+
 2.0.2 (2017-02-27):
 
 - fixed: groups were not include in the search results
