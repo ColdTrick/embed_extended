@@ -10,15 +10,12 @@ class Menus {
 	/**
 	 * Add menu item to the embed menu
 	 *
-	 * @param string         $hook         'register'
-	 * @param string         $type         'menu:embed'
-	 * @param ElggMenuItem[] $return_value the current menu items
-	 * @param array          $params       supplied params
+	 * @param \Elgg\Hook $hook 'register', 'menu:embed'
 	 *
 	 * @return ElggMenuItem[]
 	 */
-	public static function embedMenuRegister($hook, $type, $return_value, $params) {
-	
+	public static function embedMenuRegister(\Elgg\Hook $hook) {
+		$return_value = $hook->getValue();
 		$return_value[] = \ElggMenuItem::factory([
 			'name' => 'internal_content',
 			'text' => elgg_echo('embed_extended:menu:embed:internal_content'),

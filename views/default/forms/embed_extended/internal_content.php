@@ -50,7 +50,7 @@ if (elgg_is_logged_in()) {
 	$result .= elgg_format_element('span', ['class' => 'mrm'], $match_owner);
 }
 
-if (elgg_instanceof($container, 'group')) {
+if ($container instanceof \ElggGroup) {
 	$match_container = elgg_view('input/checkbox', [
 		'name' => 'match_container',
 		'value' => $container->getGUID(),
