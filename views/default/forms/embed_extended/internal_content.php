@@ -29,6 +29,7 @@ if (!empty($content_types)) {
 $search = elgg_view('input/text', [
 	'name' => 'q',
 	'placeholder' => elgg_echo('embed_extended:internal_content:placeholder'),
+	'autocomplete' => 'off',
 ]);
 
 if (!empty($content_options)) {

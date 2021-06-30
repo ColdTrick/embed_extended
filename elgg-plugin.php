@@ -1,9 +1,18 @@
 <?php
 
-use ColdTrick\EmbedExtended\Bootstrap;
-
 return [
-	'bootstrap' => Bootstrap::class,
+	'plugin' => [
+		'version' => '4.0',
+		'dependencies' => [
+			'embed' => [
+				'position' => 'after',
+			],
+			'ckeditor' => [
+				'position' => 'after',
+				'must_be_active' => false,
+			],
+		],
+	],
 	'hooks' => [
 		'register' => [
 			'menu:embed' => [
@@ -18,5 +27,8 @@ return [
 		'css/elgg'=> [
 			'css/embed_extended.css' => [],
 		],
+	],
+	'view_options' => [
+		'embed_extended/list' => ['ajax' => true],
 	],
 ];

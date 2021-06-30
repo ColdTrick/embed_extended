@@ -20,7 +20,7 @@ if (empty($title)) {
 	]);
 }
 
-$type_subtype_text = '<span class="elgg-quiet float-alt">' . elgg_echo('item:' . $entity->getType() . ':' . $entity->getSubtype()) . '</span>';
+$type_subtype_text = elgg_format_element('span', ['class' => ['elgg-quiet', 'float-alt']], elgg_echo("item:{$entity->getType()}:{$entity->getSubtype()}"));
 
 echo elgg_view('object/elements/summary', [
 	'title' => $title,

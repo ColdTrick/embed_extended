@@ -1,6 +1,5 @@
-define(function(require){
-	var elgg = require('elgg');
-	var $ = require('jquery');
+define(['jquery', 'elgg/Ajax'], function($, Ajax){
+	var ajax = new Ajax(false);
 	
 	return {
 		init: function() {
@@ -8,8 +7,9 @@ define(function(require){
 				$('#embed-extended-internal-content-result').hide();
 				$('#embed-extended-internal-content-loader').show();
 				
-				elgg.post($(this).attr('action'), {
-					data: $(this).serialize(),
+				ajax.view('embed_extended/list', {
+					method: 'POST',
+					data: ajax.objectify(this),
 					success: function(data) {
 						$('#embed-extended-internal-content-result').html(data);
 						
