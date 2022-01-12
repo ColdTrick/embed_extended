@@ -37,7 +37,7 @@ $entities = [];
 // search objects
 if ($type == ELGG_ENTITIES_ANY_VALUE || $type == 'object') {
 	if ($subtype == ELGG_ENTITIES_ANY_VALUE) {
-		$subtypes = get_registered_entity_types('object');
+		$subtypes = elgg_extract('object', elgg_entity_types_with_capability('searchable'), []);
 	} else {
 		$subtypes = [$subtype];
 	}

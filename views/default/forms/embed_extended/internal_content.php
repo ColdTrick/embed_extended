@@ -8,7 +8,7 @@
 $container = elgg_extract('container', $vars, elgg_get_logged_in_user_entity());
 
 $content_options = [];
-$content_types = get_registered_entity_types();
+$content_types = elgg_entity_types_with_capability('searchable');
 if (!empty($content_types)) {
 	$content_options = [ELGG_ENTITIES_ANY_VALUE => elgg_echo('all')];
 	
