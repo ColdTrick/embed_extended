@@ -1,6 +1,10 @@
 Version history
 ===============
 
+6.0 (2022-02-16):
+
+- changed: updated code for new Elgg 4.1 capabilities system
+
 5.0 (2021-09-27):
 
 - added: French translation
